@@ -68,6 +68,8 @@ class Parsing_dataset(BaseDataset):
             A_img = A_img[x1:x1+tw, y1+th, :]
             B_img = B_img[x1:x1+tw, y1+th, :]
 
+        A_img = self.transform(A_img)
+        B_img = self.transform(B_img)
         # # flip
         # if not self.opt.no_flip and random.random() < 0.5:
         #     A_img = A_img.transpose(Image.FLIP_LEFT_RIGHT)
