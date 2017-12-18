@@ -13,6 +13,9 @@ def CreateDataset(opt):
     elif opt.dataset_mode == 'single':
         from data.single_dataset import SingleDataset
         dataset = SingleDataset()
+    elif opt.dataset_mode == 'parsing':
+        from data.parsing_dataset import Parsing_dataset
+        dataset = Parsing_dataset()
     else:
         raise ValueError("Dataset [%s] not recognized." % opt.dataset_mode)
 

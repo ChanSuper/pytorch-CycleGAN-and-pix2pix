@@ -1,1 +1,1 @@
-python train.py --dataroot ./datasets/humanparsing --name humanparsing_pix2pix --model pix2pix --which_model_netG unet_256 --which_direction AtoB --lambda_A 100 --dataset_mode unaligned --no_lsgan --norm batch --pool_size 0 --no_flip --serial_batches --output_nc 1
+python train.py --dataroot ./datasets/humanparsing --name humanparsing_pix2pix --model pix2pix --which_model_netG unet_256 --which_direction AtoB --lambda_A 100 --dataset_mode parsing --no_lsgan --norm batch -pool_size 0 --no_flip --output_nc 1
