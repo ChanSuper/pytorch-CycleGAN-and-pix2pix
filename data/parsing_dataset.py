@@ -51,7 +51,7 @@ class Parsing_dataset(BaseDataset):
         B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]), dtype=np.float32)
         for i in range(self.opt.parts):
             B_array_channelk[i] = (B_array_channel1 == i).astype(np.float32)
-        B_img = B_array_channelk
+        B_img = B_array_channelk.transpose((1,2,0))
         print(B_img.shape) #
 
         # crop
@@ -61,8 +61,8 @@ class Parsing_dataset(BaseDataset):
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
-            A_img = A_img[x1:x1+tw, y1:y1+th, :]
-            B_img = B_img[:, x1:x1+tw, y1:y1+th]
+            A_img = A_img[y1:y1+th, x1:x1+tw, :]
+            B_img = B_img[y1:y1+th, x1:x1+tw, :]
 
         print(A_img.shape)
         print(B_img.shape)
