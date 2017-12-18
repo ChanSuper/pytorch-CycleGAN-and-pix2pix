@@ -39,3 +39,7 @@ test/.coverage
 */**/*.dylib*
 test/data/legacy_serialized.pt
 *~
+.idea/modules.xml
+.idea/pytorch-CycleGAN-and-pix2pix.iml
+.idea/vcs.xml
+.idea/workspace.xml
