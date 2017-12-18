@@ -67,8 +67,6 @@ class Pix2PixModel(BaseModel):
         self.input_A.resize_(input_A.size()).copy_(input_A)
         self.input_B.resize_(input_B.size()).copy_(input_B)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
-        print(input['A_paths'])
-        print(input['B_paths'])
 
     def forward(self):
         self.real_A = Variable(self.input_A)
@@ -139,6 +137,7 @@ class Pix2PixModel(BaseModel):
         real_A = util.tensor2im(self.real_A.data)
         fake_B = util.tensor2im(self.fake_B.data)
         real_B = util.tensor2im(self.real_B.data)
+        print(self.image_paths)
         return OrderedDict([('real_A', real_A), ('fake_B', fake_B), ('real_B', real_B)])
 
     def save(self, label):
