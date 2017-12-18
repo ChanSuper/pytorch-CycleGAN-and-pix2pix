@@ -52,6 +52,7 @@ class Parsing_dataset(BaseDataset):
         # crop
         h, w = A_img.shape[0], A_img.shape[1]
         th, tw = self.opt.fineSize, self.opt.fineSize
+        assert(h >= th and w >= tw)
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
@@ -77,6 +78,10 @@ def scale_width(img, target_width):
     ow, oh = img.size
     if (ow == target_width):
         return img
-    w = target_width
-    h = int(target_width * oh / ow)
+    if ow < oh:
+        w = target_width
+        h = int(target_width * oh / ow)
+    else:
+        h = target_width
+        w = int(target_width * ow / oh)
     return img.resize((w, h), Image.BICUBIC)
