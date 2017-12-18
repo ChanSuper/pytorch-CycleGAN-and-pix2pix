@@ -55,7 +55,7 @@ class Parsing_dataset(BaseDataset):
         B_img = np.array(B_array_channelk)
 
         # crop
-        w, h = A_img.shape
+        w, h = A_img.shape[1], A_img.shape[2]
         th, tw = self.opt.fineSize, self.opt.fineSize
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
