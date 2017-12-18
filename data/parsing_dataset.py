@@ -59,13 +59,14 @@ class Parsing_dataset(BaseDataset):
         th, tw = self.opt.fineSize, self.opt.fineSize
         print(A_path)
         print(B_path)
+        print(A_img.shape)
         print(w, h)
         print(th, tw)
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
-            A_img = A_img[:, x1:x1+tw, y1+th]
-            B_img = B_img[:, x1:x1+tw, y1+th]
+            A_img = A_img[x1:x1+tw, y1+th, :]
+            B_img = B_img[x1:x1+tw, y1+th, :]
 
         # # flip
         # if not self.opt.no_flip and random.random() < 0.5:
