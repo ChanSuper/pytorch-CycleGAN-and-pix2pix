@@ -43,3 +43,4 @@ test/data/legacy_serialized.pt
 .idea/pytorch-CycleGAN-and-pix2pix.iml
 .idea/vcs.xml
 .idea/workspace.xml
+.DS_Store
