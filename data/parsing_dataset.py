@@ -24,14 +24,16 @@ class Parsing_dataset(BaseDataset):
 
         assert(self.A_size == self.B_size)
 
-        transform_list = [
+        self.scale = transforms.Compose([
             transforms.Lambda(
-                lambda img: scale_width(img, opt.loadSize)),
+                lambda img: scale_width(img, opt.loadSize))
+        ])
+
+        self.transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5),
                                  (0.5, 0.5, 0.5))
-        ]
-        self.transform = transforms.Compose(transform_list)
+        ])
 
     def __getitem__(self, index):
         index_A = index % self.A_size
@@ -40,22 +42,16 @@ class Parsing_dataset(BaseDataset):
 
         # A
         A_img = Image.open(A_path).convert('RGB')
-        print('A')
-        print(type(A_img))
-        A_img = self.transform(A_img)
-        print(type(A_img))
+        A_img = self.scale(A_img)
 
         # B
         B_img = Image.open(B_path)
+        B_img = self.scale(B_img)
         B_array_channel1 = np.array(B_img)
         B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]), dtype=np.float32)
         for i in range(self.opt.parts):
             B_array_channelk[i] = (B_array_channel1 == i).astype(np.float32)
-        # B_img = torch.from_numpy(B_array_channelk)
-        print('B')
-        print(type(B_img))
-        B_img = self.transform(B_img)
-        print(type(B_img))
+
 
         # crop
         w, h = A_img.shape[1], A_img.shape[2]
@@ -63,13 +59,13 @@ class Parsing_dataset(BaseDataset):
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
-            A_img = A_img.crop((x1, y1, x1 + tw, y1 + th))
-            B_img = B_img.crop((x1, y1, x1 + tw, y1 + th))
+            A_img = A_img[:, x1:x1+tw, y1+th]
+            B_img = B_img[:, x1:x1+tw, y1+th]
 
-        # flip
-        if not self.opt.no_flip and random.random() < 0.5:
-            A_img = A_img.transpose(Image.FLIP_LEFT_RIGHT)
-            B_img = B_img.transpose(Image.FLIP_LEFT_RIGHT)
+        # # flip
+        # if not self.opt.no_flip and random.random() < 0.5:
+        #     A_img = A_img.transpose(Image.FLIP_LEFT_RIGHT)
+        #     B_img = B_img.transpose(Image.FLIP_LEFT_RIGHT)
         return {'A': A_img, 'B': B_img,
                 'A_paths': A_path, 'B_paths': B_path}
 
