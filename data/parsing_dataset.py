@@ -39,6 +39,7 @@ class Parsing_dataset(BaseDataset):
         print(B_path) #
 
         # A
+        print('A')
         A_img = Image.open(A_path).convert('RGB')
         print(A_img.size) #
         A_img = scale_width(A_img, self.opt.loadSize)
@@ -46,11 +47,12 @@ class Parsing_dataset(BaseDataset):
         print(A_img.shape) #
 
         # B
+        print('B')
         B_img = Image.open(B_path)
         print(B_img.size) #
         B_img = scale_width(B_img, self.opt.loadSize)
-        print(B_img.size) #
         B_array_channel1 = np.array(B_img)
+        print(B_array_channel1.shape) #
         B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]), dtype=np.float32)
         for i in range(self.opt.parts):
             B_array_channelk[i] = (B_array_channel1 == i).astype(np.float32)
@@ -59,12 +61,15 @@ class Parsing_dataset(BaseDataset):
         print(B_img.shape) #
 
         # crop
+        print('crop')
         w, h = A_img.shape[0], A_img.shape[1]
         th, tw = self.opt.fineSize, self.opt.fineSize
         print(th, tw) #
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
+            print(y1, y1+th)
+            print(x1, x1+tw)
             A_img = A_img[y1:y1+th, x1:x1+tw, :]
             B_img = B_img[y1:y1+th, x1:x1+tw, :]
 
