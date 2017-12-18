@@ -7,7 +7,7 @@ import numpy as np
 import os
 import collections
 import scipy.io as sio
-CMAP = sio.loadmat('human_colormap.mat')['colormap']
+CMAP = sio.loadmat('../human_colormap.mat')['colormap']
 CMAP = (CMAP*256).astype(np.uint8)
 
 # Converts a Tensor into a Numpy array
