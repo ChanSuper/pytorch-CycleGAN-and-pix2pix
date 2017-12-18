@@ -67,8 +67,8 @@ class Pix2PixModel(BaseModel):
         self.input_A.resize_(input_A.size()).copy_(input_A)
         self.input_B.resize_(input_B.size()).copy_(input_B)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
-        print(input['A_paths'])
-        print(input['B_paths'])
+        # print(input['A_paths'])
+        # print(input['B_paths'])
 
     def forward(self):
         self.real_A = Variable(self.input_A)
@@ -93,8 +93,8 @@ class Pix2PixModel(BaseModel):
         self.loss_D_fake = self.criterionGAN(pred_fake, False)
 
         # Real
-        print(self.real_A.data.shape) #
-        print(self.real_B.data.shape) #
+        # print(self.real_A.data.shape) #
+        # print(self.real_B.data.shape) #
         real_AB = torch.cat((self.real_A, self.real_B), 1)
         pred_real = self.netD(real_AB)
         self.loss_D_real = self.criterionGAN(pred_real, True)
