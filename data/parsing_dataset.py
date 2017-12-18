@@ -56,14 +56,13 @@ class Parsing_dataset(BaseDataset):
 
         # crop
         w, h = A_img.shape[0], A_img.shape[1]
-        print(w, h) #
         th, tw = self.opt.fineSize, self.opt.fineSize
         print(th, tw) #
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
             A_img = A_img[x1:x1+tw, y1:y1+th, :]
-            B_img = B_img[x1:x1+tw, y1:y1+th, :]
+            B_img = B_img[:, x1:x1+tw, y1:y1+th]
 
         print(A_img.shape)
         print(B_img.shape)
