@@ -1,4 +1,4 @@
-from data.base_dataset import BaseDataset, get_transform, __scale_width
+from data.base_dataset import BaseDataset, get_transform
 from data.image_folder import make_dataset
 import os.path
 from PIL import Image
@@ -26,7 +26,7 @@ class Parsing_dataset(BaseDataset):
 
         transform_list = [
             transforms.Lambda(
-                lambda img: __scale_width(img, opt.loadSize)),
+                lambda img: scale_width(img, opt.loadSize)),
             transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5),
                                  (0.5, 0.5, 0.5))
@@ -78,3 +78,11 @@ class Parsing_dataset(BaseDataset):
 
     def name(self):
         return 'parsingDataset'
+
+def scale_width(img, target_width):
+    ow, oh = img.size
+    if (ow == target_width):
+        return img
+    w = target_width
+    h = int(target_width * oh / ow)
+    return img.resize((w, h), Image.BICUBIC)
