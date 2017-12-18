@@ -36,7 +36,6 @@ class Parsing_dataset(BaseDataset):
         B_path = self.B_paths[index_A]
 
         # A
-        print('A')
         A_img = Image.open(A_path).convert('RGB')
         A_img = scale_width(A_img, self.opt.loadSize)
         A_img = np.array(A_img)
