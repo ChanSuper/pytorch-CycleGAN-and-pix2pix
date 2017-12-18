@@ -15,6 +15,7 @@ CMAP = (CMAP*256).astype(np.uint8)
 def tensor2im(image_tensor, imtype=np.uint8):
     print(image_tensor.shape)  #
     image_numpy = image_tensor[0].cpu().float().numpy()
+    print(image_numpy.shape)  #
     if image_numpy.shape[0] == 1:
         image_numpy = np.tile(image_numpy, (3, 1, 1))
         image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
