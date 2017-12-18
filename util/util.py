@@ -6,14 +6,26 @@ import inspect, re
 import numpy as np
 import os
 import collections
+import scipy.io as sio
+CMAP = sio.loadmat('human_colormap.mat')['colormap']
+CMAP = (CMAP*256).astype(np.uint8)
 
 # Converts a Tensor into a Numpy array
 # |imtype|: the desired type of the converted numpy array
 def tensor2im(image_tensor, imtype=np.uint8):
+    print(image_tensor.shape)  #
     image_numpy = image_tensor[0].cpu().float().numpy()
     if image_numpy.shape[0] == 1:
         image_numpy = np.tile(image_numpy, (3, 1, 1))
-    image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
+        image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
+    elif image_numpy.shape[0] > 3:
+        image_index = np.argmax(image_numpy, axis = 0)
+        image_numpy = np.zeros((image_index.shape[0], image_index.shape[1], 3))
+        for h in range(image_index.shape[0]):
+            for w in range(image_index.shape[1]):
+                image_numpy[h, w, :] = CMAP[image_index[h, w]]
+    else:
+        image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
     return image_numpy.astype(imtype)
 
 
