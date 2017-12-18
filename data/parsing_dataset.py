@@ -64,7 +64,8 @@ class Parsing_dataset(BaseDataset):
 
         # crop
         print('crop')
-        w, h = A_img.shape[0], A_img.shape[1]
+        h, w = A_img.shape[0], A_img.shape[1]
+        print(h, w) #
         th, tw = self.opt.fineSize, self.opt.fineSize
         print(th, tw) #
         if not (w == tw and h == th):
