@@ -55,8 +55,10 @@ class Parsing_dataset(BaseDataset):
         B_img = np.array(B_array_channelk)
 
         # crop
-        w, h = A_img.shape[1], A_img.shape[2]
+        w, h = A_img.shape[0], A_img.shape[1]
         th, tw = self.opt.fineSize, self.opt.fineSize
+        print(A_path)
+        print(B_path)
         print(w, h)
         print(th, tw)
         if not (w == tw and h == th):
