@@ -51,7 +51,7 @@ class Parsing_dataset(BaseDataset):
         B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]), dtype=np.float32)
         for i in range(self.opt.parts):
             B_array_channelk[i] = (B_array_channel1 == i).astype(np.float32)
-        B_img = torch.from_numpy(B_array_channelk)
+        # B_img = torch.from_numpy(B_array_channelk)
         print('B')
         print(type(B_img))
         B_img = self.transform(B_img)
