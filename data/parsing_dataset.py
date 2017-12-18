@@ -43,6 +43,7 @@ class Parsing_dataset(BaseDataset):
         A_img = Image.open(A_path).convert('RGB')
         print(A_img.size) #
         A_img = scale_width(A_img, self.opt.loadSize)
+        print(A_img.size) #
         A_img = np.array(A_img)
         print(A_img.shape) #
 
@@ -51,6 +52,7 @@ class Parsing_dataset(BaseDataset):
         B_img = Image.open(B_path)
         print(B_img.size) #
         B_img = scale_width(B_img, self.opt.loadSize)
+        print(B_img.size) #
         B_array_channel1 = np.array(B_img)
         print(B_array_channel1.shape) #
         B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]), dtype=np.float32)
