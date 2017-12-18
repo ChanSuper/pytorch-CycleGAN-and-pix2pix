@@ -20,6 +20,7 @@ class UnalignedDataset(BaseDataset):
         self.B_paths = sorted(self.B_paths)
         self.A_size = len(self.A_paths)
         self.B_size = len(self.B_paths)
+        assert(self.A_size == self.B_size)
         self.transform = get_transform(opt)
 
     def __getitem__(self, index):
@@ -50,6 +51,8 @@ class UnalignedDataset(BaseDataset):
         if output_nc == 1:  # RGB to gray
             tmp = B[0, ...] * 0.299 + B[1, ...] * 0.587 + B[2, ...] * 0.114
             B = tmp.unsqueeze(0)
+        print(A.shape)
+        print(B.shape)
         return {'A': A, 'B': B,
                 'A_paths': A_path, 'B_paths': B_path}
 
