@@ -200,6 +200,30 @@ class GANLoss(nn.Module):
         return self.loss(input, target_tensor)
 
 
+class ParsingCrossEntropyLoss(nn.Module):
+    def __init__(self, tensor=torch.FloatTensor):
+        self.Tensor = tensor
+        self.loss = nn.CrossEntropyLoss()
+
+    def __call__(self, input, target):
+        # input
+        input_array = input.data.numpy()
+        input_array.transpose((1,0,2,3))
+        c = input_array.shape[0]
+        n = input_array.shape[1] * input_array.shape[2] * input_array.shape[3]
+        input_array.reshape((c, n))
+        input_array.transpose()
+        input = torch.from_numpy(input_array)
+
+        # target
+        target_array = target.data.numpy()
+        target_array = np.argmax(target_array, axis=1)
+        assert(n == target_array.shape[0]*target_array.shape[1]*target_array.shape[2])
+        target_array.reshape(n)
+        target = torch.from_numpy(target_array)
+
+        return self.loss(input, target)
+
 # Defines the generator that consists of Resnet blocks between a few
 # downsampling/upsampling operations.
 # Code and idea originally from Justin Johnson's architecture.

@@ -40,7 +40,8 @@ class Pix2PixModel(BaseModel):
             self.old_lr = opt.lr
             # define loss functions
             self.criterionGAN = networks.GANLoss(use_lsgan=not opt.no_lsgan, tensor=self.Tensor)
-            self.criterionL1 = torch.nn.L1Loss()
+            # self.criterionL1 = torch.nn.L1Loss()
+            self.criterionParsingLoss = networks.ParsingCrossEntropyLoss(tensor=self.Tensor)
 
             # initialize optimizers
             self.schedulers = []
@@ -109,9 +110,11 @@ class Pix2PixModel(BaseModel):
         self.loss_G_GAN = self.criterionGAN(pred_fake, True)
 
         # Second, G(A) = B
-        self.loss_G_L1 = self.criterionL1(self.fake_B, self.real_B) * self.opt.lambda_A
+        # self.loss_G_L1 = self.criterionL1(self.fake_B, self.real_B) * self.opt.lambda_A
+        self.loss_G_parsing = self.criterionParsingLoss(self.fake_B, self.real_B) * self.opt.lambda_A
 
-        self.loss_G = self.loss_G_GAN + self.loss_G_L1
+        # self.loss_G = self.loss_G_GAN + self.loss_G_L1
+        self.loss_G = self.loss_G_GAN + self.loss_G_parsing
 
         self.loss_G.backward()
 
