@@ -208,20 +208,22 @@ class ParsingCrossEntropyLoss(nn.Module):
 
     def __call__(self, input, target):
         # input
-        input_array = input.data.numpy()
+        input_array = input.data.cpu().float().numpy()  # 不知道这个float是不是必要的
         input_array.transpose((1,0,2,3))
         c = input_array.shape[0]
         n = input_array.shape[1] * input_array.shape[2] * input_array.shape[3]
         input_array.reshape((c, n))
         input_array.transpose()
         input = torch.from_numpy(input_array)
+        input = Variable(input)
 
         # target
-        target_array = target.data.numpy()
+        target_array = target.data.cpu().float().numpy()
         target_array = np.argmax(target_array, axis=1)
         assert(n == target_array.shape[0]*target_array.shape[1]*target_array.shape[2])
         target_array.reshape(n)
         target = torch.from_numpy(target_array)
+        target = Variable(target)
 
         return self.loss(input, target)
 
