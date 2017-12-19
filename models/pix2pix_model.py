@@ -114,6 +114,8 @@ class Pix2PixModel(BaseModel):
         self.loss_G_parsing = self.criterionParsingLoss(self.fake_B, self.real_B) * self.opt.lambda_A
 
         # self.loss_G = self.loss_G_GAN + self.loss_G_L1
+        print(type(self.loss_G_GAN))
+        print(type(self.loss_G_parsing))
         self.loss_G = self.loss_G_GAN + self.loss_G_parsing
 
         self.loss_G.backward()
