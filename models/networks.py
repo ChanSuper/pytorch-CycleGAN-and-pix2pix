@@ -202,6 +202,7 @@ class GANLoss(nn.Module):
 
 class ParsingCrossEntropyLoss(nn.Module):
     def __init__(self, tensor=torch.FloatTensor):
+        super(ParsingCrossEntropyLoss, self).__init__()
         self.Tensor = tensor
         self.loss = nn.CrossEntropyLoss()
 
