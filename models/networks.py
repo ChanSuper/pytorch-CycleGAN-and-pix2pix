@@ -232,7 +232,7 @@ class ParsingCrossEntropyLoss(nn.Module):
         target = torch.from_numpy(target_array)
         target = Variable(target)
 
-        return self.loss(input, target)
+        return self.loss(input.cuda(), target.cuda())
 
 # Defines the generator that consists of Resnet blocks between a few
 # downsampling/upsampling operations.
