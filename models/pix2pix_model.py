@@ -114,8 +114,6 @@ class Pix2PixModel(BaseModel):
         self.loss_G_parsing = self.criterionParsingLoss(self.fake_B, self.real_B) * self.opt.lambda_A
 
         # self.loss_G = self.loss_G_GAN + self.loss_G_L1
-        print(type(self.loss_G_GAN.data))  #
-        print(type(self.loss_G_parsing.data))  #
         self.loss_G = self.loss_G_GAN + self.loss_G_parsing
 
         self.loss_G.backward()
@@ -133,7 +131,8 @@ class Pix2PixModel(BaseModel):
 
     def get_current_errors(self):
         return OrderedDict([('G_GAN', self.loss_G_GAN.data[0]),
-                            ('G_L1', self.loss_G_L1.data[0]),
+                            # ('G_L1', self.loss_G_L1.data[0]),
+                            ('G_parsing', self.loss_G_parsing.data[0]),
                             ('D_real', self.loss_D_real.data[0]),
                             ('D_fake', self.loss_D_fake.data[0])
                             ])
