@@ -22,7 +22,7 @@ class Parsing_dataset(BaseDataset):
         self.A_size = len(self.A_paths)
         self.B_size = len(self.B_paths)
 
-        assert(self.A_size == self.B_size)
+        assert (self.A_size == self.B_size)
 
         self.transform = transforms.Compose([
             transforms.ToTensor(),
@@ -44,20 +44,21 @@ class Parsing_dataset(BaseDataset):
         B_img = Image.open(B_path)
         B_img = scale_width(B_img, self.opt.loadSize)
         B_array_channel1 = np.array(B_img)
-        B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]), dtype=np.float32)
+        B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]),
+                                    dtype=np.float32)
         for i in range(self.opt.parts):
-            B_array_channelk[i] = (B_array_channel1 == i).astype(np.float32)
+            B_array_channelk[i, :, :] = (B_array_channel1 == i).astype(np.float32)
         B_img = B_array_channelk
 
         # crop
         h, w = A_img.shape[0], A_img.shape[1]
         th, tw = self.opt.fineSize, self.opt.fineSize
-        assert(h >= th and w >= tw)
+        assert (h >= th and w >= tw)
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
-            A_img = A_img[y1:y1+th, x1:x1+tw, :]
-            B_img = B_img[:, y1:y1+th, x1:x1+tw]
+            A_img = A_img[y1:y1 + th, x1:x1 + tw, :]
+            B_img = B_img[:, y1:y1 + th, x1:x1 + tw]
 
         A_img = self.transform(A_img)
         # B_img = self.transform(B_img)
@@ -75,6 +76,7 @@ class Parsing_dataset(BaseDataset):
 
     def name(self):
         return 'parsingDataset'
+
 
 def scale_width(img, target_width):
     ow, oh = img.size

@@ -7,8 +7,10 @@ import numpy as np
 import os
 import collections
 import scipy.io as sio
+
 CMAP = sio.loadmat('colormap2.mat')['colormap']
-CMAP = (CMAP*256).astype(np.uint8)
+CMAP = (CMAP * 256).astype(np.uint8)
+
 
 # Converts a Tensor into a Numpy array
 # |imtype|: the desired type of the converted numpy array
@@ -20,7 +22,7 @@ def tensor2im(image_tensor, imtype=np.uint8):
         image_numpy = np.tile(image_numpy, (3, 1, 1))
         image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
     elif image_numpy.shape[0] > 3:
-        image_index = np.argmax(image_numpy, axis = 0)
+        image_index = np.argmax(image_numpy, axis=0)
         image_numpy = np.zeros((image_index.shape[0], image_index.shape[1], 3))
         for h in range(image_index.shape[0]):
             for w in range(image_index.shape[1]):
@@ -47,21 +49,24 @@ def save_image(image_numpy, image_path):
     image_pil = Image.fromarray(image_numpy)
     image_pil.save(image_path)
 
+
 def info(object, spacing=10, collapse=1):
     """Print methods and doc strings.
     Takes module, class, list, dictionary, or string."""
     methodList = [e for e in dir(object) if isinstance(getattr(object, e), collections.Callable)]
     processFunc = collapse and (lambda s: " ".join(s.split())) or (lambda s: s)
-    print( "\n".join(["%s %s" %
+    print("\n".join(["%s %s" %
                      (method.ljust(spacing),
                       processFunc(str(getattr(object, method).__doc__)))
-                     for method in methodList]) )
+                     for method in methodList]))
+
 
 def varname(p):
     for line in inspect.getframeinfo(inspect.currentframe().f_back)[3]:
         m = re.search(r'\bvarname\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)', line)
         if m:
             return m.group(1)
+
 
 def print_numpy(x, val=True, shp=False):
     x = x.astype(np.float64)

@@ -209,6 +209,7 @@ class ParsingCrossEntropyLoss(nn.Module):
     def __call__(self, input, target):
         # input
         input_array = input.data.cpu().float().numpy()  # 不知道这个float是不是必要的
+        print(input_array.shape)  #
         input_array = input_array.transpose((1,0,2,3))
         c = input_array.shape[0]
         n = input_array.shape[1] * input_array.shape[2] * input_array.shape[3]
@@ -219,6 +220,7 @@ class ParsingCrossEntropyLoss(nn.Module):
 
         # target
         target_array = target.data.cpu().float().numpy()
+        print(target_array.shape)  #
         target_array = np.argmax(target_array, axis=1)
         assert(n == target_array.shape[0]*target_array.shape[1]*target_array.shape[2])
         target_array = target_array.reshape(n)
