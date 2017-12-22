@@ -35,14 +35,22 @@ class Parsing_dataset(BaseDataset):
         A_path = self.A_paths[index_A]
         B_path = self.B_paths[index_A]
 
-        # A
         A_img = Image.open(A_path).convert('RGB')
-        A_img = scale_width(A_img, self.opt.loadSize)
+        B_img = Image.open(B_path)
+
+        # flip
+        if not self.opt.no_flip and random.random() < 0.5:
+            A_img = A_img.transpose(Image.FLIP_LEFT_RIGHT)
+            B_img = B_img.transpose(Image.FLIP_LEFT_RIGHT)
+
+        if A_img.size[0] < self.opt.fineSize or A_img.size[1] < self.opt.fineSize:
+            A_img = scale_width(A_img, self.opt.loadSize)
         A_img = np.array(A_img)
 
-        # B
-        B_img = Image.open(B_path)
-        B_img = scale_width(B_img, self.opt.loadSize)
+        if B_img.size[0] < self.opt.fineSize or B_img.size[1] < self.opt.fineSize:
+            B_img = scale_width(B_img, self.opt.loadSize)
+
+
         B_array_channel1 = np.array(B_img)
         B_array_channelk = np.zeros((self.opt.parts, B_array_channel1.shape[0], B_array_channel1.shape[1]),
                                     dtype=np.float32)
@@ -60,13 +68,8 @@ class Parsing_dataset(BaseDataset):
             B_img = B_img[:, y1:y1 + th, x1:x1 + tw]
 
         A_img = self.transform(A_img)
-        # B_img = self.transform(B_img)
         B_img = torch.from_numpy(B_img)
 
-        # # flip
-        # if not self.opt.no_flip and random.random() < 0.5:
-        #     A_img = A_img.transpose(Image.FLIP_LEFT_RIGHT)
-        #     B_img = B_img.transpose(Image.FLIP_LEFT_RIGHT)
         return {'A': A_img, 'B': B_img,
                 'A_paths': A_path, 'B_paths': B_path}
 
