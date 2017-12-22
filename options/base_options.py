@@ -40,6 +40,8 @@ class BaseOptions():
         self.parser.add_argument('--no_flip', action='store_true', help='if specified, do not flip the images for data augmentation')
         self.parser.add_argument('--init_type', type=str, default='normal', help='network initialization [normal|xavier|kaiming|orthogonal]')
         self.parser.add_argument('--parts', type=int, default=20, help='it decides how many parts in parsing')
+        self.parser.add_argument('--softmax_out', action='store_true',
+                                 help='if true, a softmax operation on output, otherwise original output')
         self.initialized = True
 
     def parse(self):
