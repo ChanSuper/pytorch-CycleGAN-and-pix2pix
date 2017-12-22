@@ -53,6 +53,8 @@ class Parsing_dataset(BaseDataset):
         # crop
         h, w = A_img.shape[0], A_img.shape[1]
         th, tw = self.opt.fineSize, self.opt.fineSize
+        print(h, w)
+        print(th, tw)
         assert (h >= th and w >= tw)
         if not (w == tw and h == th):
             x1 = random.randint(0, w - tw)
