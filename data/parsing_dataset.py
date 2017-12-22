@@ -55,8 +55,7 @@ class Parsing_dataset(BaseDataset):
         th, tw = self.opt.fineSize, self.opt.fineSize
         print(h, w)
         print(th, tw)
-        assert (h >= th and w >= tw)
-        if not (w == tw and h == th):
+        if(h >= th and w >= tw):
             x1 = random.randint(0, w - tw)
             y1 = random.randint(0, h - th)
             A_img = A_img[y1:y1 + th, x1:x1 + tw, :]
